@@ -8,5 +8,9 @@ namespace Route.IKEA.DAL.Presistence.Data
 {
     internal class ApplicationDbContextSeeds
     {
+        public static void Seed(ApplicationDbContext dbContext)
+        {
+
+        }
     }
 }

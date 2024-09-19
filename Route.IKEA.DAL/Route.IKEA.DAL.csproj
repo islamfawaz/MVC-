@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
-    <Folder Include="Presistence\Data\Configurations\" />
     <Folder Include="Presistence\Data\Migrations\" />
     <Folder Include="Presistence\Data\Seeds\" />
     <Folder Include="Presistence\Repositories\" />
