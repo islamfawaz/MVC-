@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Route.IKEA.DAL.Presistence.Data;
+
 namespace Route.IKEA.PL
 {
     public class Program
@@ -9,6 +12,15 @@ namespace Route.IKEA.PL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            //builder.Services.AddScoped<ApplicationDbContext>();
+            //builder.Services.AddScoped<DbContextOptions<ApplicationDbContext>>();
+
+            builder.Services.AddDbContext<ApplicationDbContext>((optionsBuilder) =>
+            {
+                optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
 
             #endregion
 

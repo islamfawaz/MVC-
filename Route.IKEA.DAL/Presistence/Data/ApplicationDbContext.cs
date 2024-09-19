@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Route.IKEA.DAL.Entities.Department;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,16 @@ using System.Threading.Tasks;
 
 namespace Route.IKEA.DAL.Presistence.Data
 {
-    internal class ApplicationDbContext:DbContext
+    public class ApplicationDbContext:DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :base(options)
         {
-            optionsBuilder.UseSqlServer("Server=.; DataBase=CompanyIKEA; Trusted_Connection=True; TrustServerCertificate=True;");
+             
+
         }
+
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
