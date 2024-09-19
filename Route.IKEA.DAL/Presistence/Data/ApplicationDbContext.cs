@@ -11,7 +11,7 @@ namespace Route.IKEA.DAL.Presistence.Data
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+             
         }
     }
 }
