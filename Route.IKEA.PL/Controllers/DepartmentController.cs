@@ -72,5 +72,17 @@ namespace Route.IKEA.PL.Controllers
 
             }
         }
+
+        [HttpGet]
+        public IActionResult Details(int? id)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var department = _departmentService.GetDepartmentById(id.Value);
+            if (department == null)
+                return NotFound();
+            return View(department);    
+        }
     }
 }
