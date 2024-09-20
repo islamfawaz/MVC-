@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Route.IKEA.DAL.Presistence.Data;
+using Route.IKEA.DAL.Presistence.Repositories.Departments;
 
 namespace Route.IKEA.PL
 {
@@ -20,6 +21,7 @@ namespace Route.IKEA.PL
             {
                 optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
 
 
             #endregion
