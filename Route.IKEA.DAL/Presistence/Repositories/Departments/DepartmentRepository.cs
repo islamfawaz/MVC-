@@ -58,9 +58,15 @@ namespace Route.IKEA.DAL.Presistence.Repositories.Departments
         }
         public IEnumerable<Department> SearchDepartmentsByName(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                return Enumerable.Empty<Department>(); 
+            }
+
             return _dbContext.Departments
-                .Where(d => d.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
+                .Where(d => d.Name.ToLower().Contains(name.ToLower()))
                 .ToList();
         }
+
     }
 }
