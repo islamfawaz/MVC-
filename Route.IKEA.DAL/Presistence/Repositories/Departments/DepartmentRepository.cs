@@ -19,39 +19,36 @@ namespace Route.IKEA.DAL.Presistence.Repositories.Departments
             _dbContext = dbContext;
         }
 
-        public IEnumerable<Department> GetAll(bool withAsNoTracking = true )
+        public IEnumerable<Department> GetAll(bool withAsNoTracking = true)
         {
             if (withAsNoTracking)
                 return _dbContext.Departments.AsNoTracking().ToList();
-            
-            else
-                return _dbContext.Departments.AsNoTracking().ToList();
 
+            return _dbContext.Departments.ToList();
         }
 
         public Department? GetById(int id)
         {
-            return _dbContext.Departments.Find(id);
-        }
 
+            return _dbContext.Departments.Find(id);
+
+            
+        }
         public int Add(Department entity)
         {
             _dbContext.Departments.Add(entity);
             return _dbContext.SaveChanges();
         }
 
-
-
-        public int Update(Department entity)
-        {
-            _dbContext.Departments.Update(entity);
-            return _dbContext.SaveChanges();    
-        }
-
-
         public int Delete(Department entity)
         {
-            _dbContext.Departments.Remove(entity);
+            _dbContext.Remove(entity);
+            return _dbContext.SaveChanges();
+
+        }
+        public int Update(Department entity)
+        {
+            _dbContext.Update(entity);
             return _dbContext.SaveChanges();
         }
 

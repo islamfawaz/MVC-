@@ -50,7 +50,7 @@ namespace Route.IKEA.PL
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Department}/{action=Index}/{id?}");
 
             #endregion
             app.Run();

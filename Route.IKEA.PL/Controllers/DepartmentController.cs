@@ -12,9 +12,15 @@ namespace Route.IKEA.PL.Controllers
             _departmentService = departmentService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(string searchTerm)
         {
-            return View();
+            ViewData["SearchTerm"] = searchTerm;
+
+            var departments = string.IsNullOrWhiteSpace(searchTerm) ? _departmentService.GetAllDepartments() : _departmentService.SearchDepartments(searchTerm);
+
+            return View(departments);
         }
+
     }
 }
