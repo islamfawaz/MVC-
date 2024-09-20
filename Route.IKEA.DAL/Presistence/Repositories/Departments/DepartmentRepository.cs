@@ -55,8 +55,15 @@ namespace Route.IKEA.DAL.Presistence.Repositories.Departments
             return _dbContext.SaveChanges();
         }
 
-
-
-       
+        public IQueryable<Department> GetAllAsIQueryable()
+        {
+            return _dbContext.Departments;
+        }
+        public IEnumerable<Department> SearchDepartmentsByName(string name)
+        {
+            return _dbContext.Departments
+                .Where(d => d.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
     }
 }

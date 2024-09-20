@@ -10,6 +10,7 @@ namespace Route.IKEA.DAL.Presistence.Repositories.Departments
     public interface IDepartmentRepository
     {
         IEnumerable<Department> GetAll(bool withAsNoTracking=true);
+        IQueryable<Department> GetAllAsIQueryable();
 
         Department? GetById(int id);
 
@@ -19,6 +20,7 @@ namespace Route.IKEA.DAL.Presistence.Repositories.Departments
 
         int Delete(Department entity);
 
+        IEnumerable<Department> SearchDepartmentsByName(string name);
 
     }
 }
