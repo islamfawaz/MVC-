@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Route.IKEA.BLL.Services.Departments;
+using Route.IKEA.DAL.Entities.Department;
 using Route.IKEA.DAL.Presistence.Data;
 using Route.IKEA.DAL.Presistence.Repositories.Departments;
 
@@ -23,6 +25,8 @@ namespace Route.IKEA.PL
             });
 
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
             #endregion
 

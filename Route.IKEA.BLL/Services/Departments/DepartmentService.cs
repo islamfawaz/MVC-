@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Route.IKEA.BLL.Services.Departments
 {
-    internal class DepartmentService : IDepartmentService
+    public class DepartmentService : IDepartmentService
     {
         private readonly IDepartmentRepository _departmentRepository;
 
@@ -18,9 +18,6 @@ namespace Route.IKEA.BLL.Services.Departments
         {
             _departmentRepository = departmentRepository;
         }
-
-
-
         public IEnumerable<DepartmentReturnDto> GetAllDepartments()
         {
             var department = _departmentRepository.GetAllAsIQueryable().Select(department => new DepartmentReturnDto
@@ -55,8 +52,6 @@ namespace Route.IKEA.BLL.Services.Departments
 
         }
 
-
-
         public int UpdateDepartment(UpdatedDepartmentDto departmentDto)
         {
             var department = new Department()
@@ -83,7 +78,7 @@ namespace Route.IKEA.BLL.Services.Departments
 
             var departments = _departmentRepository.SearchDepartmentsByName(name);
 
-            var departmentDtos = departments.Select(d => new DepartmentReturnDto
+            var Searched = departments.Select(d => new DepartmentReturnDto
             {
                 Id = d.Id,
                 Name = d.Name
@@ -92,7 +87,7 @@ namespace Route.IKEA.BLL.Services.Departments
                     
             });
 
-            return departmentDtos;
+            return Searched;
         }
 
         public int CreateDepartment(CreateDepartmentDto departmentDto)
