@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Route.IKEA.BLL.Models;
+using Route.IKEA.BLL.Models.Departments;
 using Route.IKEA.DAL.Entities.Department;
 using Route.IKEA.DAL.Presistence.Repositories.Departments;
 using System;

@@ -1,4 +1,4 @@
-﻿using Route.IKEA.BLL.Models;
+﻿using Route.IKEA.BLL.Models.Departments;
 using Route.IKEA.DAL.Entities.Department;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Route.IKEA.BLL.Models;
+using Route.IKEA.BLL.Models.Departments;
 using Route.IKEA.BLL.Services.Departments;
 using Route.IKEA.DAL.Entities.Department;
 using Route.IKEA.PL.ViewModels.Departments;
