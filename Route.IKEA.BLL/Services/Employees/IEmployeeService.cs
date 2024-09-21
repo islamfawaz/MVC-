@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Route.IKEA.BLL.Services.Employees
 {
-    internal interface IEmployeeService
+    public interface IEmployeeService
     {
         IEnumerable<EmployeeDto> GetAllEmployee();
 

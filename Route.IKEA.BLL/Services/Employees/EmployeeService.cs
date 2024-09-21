@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Route.IKEA.BLL.Services.Employees
 {
-    internal class EmployeeService : IEmployeeService
+    public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
 
