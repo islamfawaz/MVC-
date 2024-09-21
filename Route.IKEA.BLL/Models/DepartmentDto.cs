@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Route.IKEA.BLL.Models
 {
-    public class DepartmentReturnDto
+    public class DepartmentDto
     {
         public string Code { get; set; } = null!;
         public int Id { get; set; }

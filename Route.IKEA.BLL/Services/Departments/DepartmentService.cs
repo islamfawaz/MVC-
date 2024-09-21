@@ -45,9 +45,9 @@ namespace Route.IKEA.BLL.Services.Departments
 
         }
 
-        public IEnumerable<DepartmentReturnDto> GetAllDepartments()
+        public IEnumerable<DepartmentDto> GetAllDepartments()
         {
-            var department = _departmentRepository.GetAllAsIQueryable().Select(department => new DepartmentReturnDto
+            var department = _departmentRepository.GetAllAsIQueryable().Select(department => new DepartmentDto
             {
                 Id = department.Id,
                 Code = department.Code,
@@ -95,7 +95,7 @@ namespace Route.IKEA.BLL.Services.Departments
             return _departmentRepository.Update(department);
         }
 
-        public IEnumerable<DepartmentReturnDto> SearchDepartments(string name)
+        public IEnumerable<DepartmentDto> SearchDepartments(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -104,7 +104,7 @@ namespace Route.IKEA.BLL.Services.Departments
 
             var departments = _departmentRepository.SearchDepartmentsByName(name);
 
-            var Searched = departments.Select(d => new DepartmentReturnDto
+            var Searched = departments.Select(d => new DepartmentDto
             {
                 Id = d.Id,
                 Name = d.Name

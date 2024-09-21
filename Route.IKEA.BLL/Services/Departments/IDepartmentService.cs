@@ -10,7 +10,7 @@ namespace Route.IKEA.BLL.Services.Departments
 {
     public interface IDepartmentService
     {
-        IEnumerable<DepartmentReturnDto>GetAllDepartments();
+        IEnumerable<DepartmentDto>GetAllDepartments();
 
         DepartmentDetailsDto ? GetDepartmentById(int id); 
         int CreateDepartment(CreateDepartmentDto entity);
@@ -19,7 +19,7 @@ namespace Route.IKEA.BLL.Services.Departments
 
         bool DeleteDepartment(int entity);
 
-        IEnumerable<DepartmentReturnDto> SearchDepartments(string name);
+        IEnumerable<DepartmentDto> SearchDepartments(string name);
 
     }
 }
