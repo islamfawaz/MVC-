@@ -102,7 +102,7 @@ namespace Route.IKEA.BLL.Services.Departments
                 throw new ArgumentException("Search term cannot be empty or null.", nameof(name));
             }
 
-            var departments = _departmentRepository.SearchDepartmentsByName(name);
+            var departments = _departmentRepository.SearchByName(name);
 
             var Searched = departments.Select(d => new DepartmentDto
             {

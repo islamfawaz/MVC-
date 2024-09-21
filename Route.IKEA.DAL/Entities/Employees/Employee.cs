@@ -15,7 +15,6 @@ namespace Route.IKEA.DAL.Entities.Employees
         //[MaxLength(50,ErrorMessage ="Max length of name is 50 char")]
         //[MinLength(2, ErrorMessage = "Min length of name is 2 char")]
 
-        public string Name { get; set; } =null!;
 
 
      //   [Range(22, 30, ErrorMessage = "Age must be between 22 and 30")]
