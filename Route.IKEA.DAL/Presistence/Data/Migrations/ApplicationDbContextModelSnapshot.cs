@@ -8,7 +8,7 @@ using Route.IKEA.DAL.Presistence.Data;
 
 #nullable disable
 
-namespace Route.IKEA.DAL.Presistence.Data.Migrations
+namespace Route.IKEA.DAL.Persistence.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -40,7 +40,7 @@ namespace Route.IKEA.DAL.Presistence.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATEUTC");
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<DateOnly>("CreationDate")
                         .HasColumnType("date");
@@ -57,7 +57,7 @@ namespace Route.IKEA.DAL.Presistence.Data.Migrations
                     b.Property<DateTime>("LastModifiedOn")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
-                        .HasComputedColumnSql("GETDATEUTC()");
+                        .HasComputedColumnSql("GETUTCDATE()");
 
                     b.Property<string>("Name")
                         .IsRequired()
