@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Route.IKEA.BLL.Services.Departments;
-using Route.IKEA.DAL.Entities.Department;
+using Route.IKEA.BLL.Services.Employees;
 using Route.IKEA.DAL.Presistence.Data;
 using Route.IKEA.DAL.Presistence.Repositories.Departments;
+using Route.IKEA.DAL.Presistence.Repositories.Employees;
 
 namespace Route.IKEA.PL
 {
@@ -16,17 +17,19 @@ namespace Route.IKEA.PL
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            //builder.Services.AddScoped<ApplicationDbContext>();
-            //builder.Services.AddScoped<DbContextOptions<ApplicationDbContext>>();
-
+            // Configure the database connection using ApplicationDbContext
             builder.Services.AddDbContext<ApplicationDbContext>((optionsBuilder) =>
             {
                 optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            // Register Department-related services and repositories
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+
+            // Register Employee-related services and repositories
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
             #endregion
 
@@ -37,7 +40,6 @@ namespace Route.IKEA.PL
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -50,9 +52,10 @@ namespace Route.IKEA.PL
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Department}/{action=Index}/{id?}");
+                pattern: "{controller=Employee}/{action=Index}/{id?}"); // This can be changed to Department or Employee as needed
 
             #endregion
+
             app.Run();
         }
     }
