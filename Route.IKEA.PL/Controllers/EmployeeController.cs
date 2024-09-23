@@ -43,6 +43,8 @@ namespace Route.IKEA.PL.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+
         public IActionResult Create(CreateEmployeeDto employee)
         {
             if (!ModelState.IsValid)
@@ -116,6 +118,8 @@ namespace Route.IKEA.PL.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+
         public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto employee)
         {
             if (!ModelState.IsValid)
@@ -171,6 +175,8 @@ namespace Route.IKEA.PL.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+
         public IActionResult Delete(int id)
         {
             var message = string.Empty;
