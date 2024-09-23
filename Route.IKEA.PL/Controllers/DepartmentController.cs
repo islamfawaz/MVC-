@@ -23,7 +23,7 @@ namespace Route.IKEA.PL.Controllers
         }
         #endregion
 
-        #region MyRegion
+        #region Index
         [HttpGet]
 
         public IActionResult Index(string searchTerm)

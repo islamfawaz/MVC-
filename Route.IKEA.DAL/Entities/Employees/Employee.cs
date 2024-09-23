@@ -35,7 +35,7 @@ namespace Route.IKEA.DAL.Entities.Employees
 
         public string ? PhoneNumber { get; set; }
   //      [Display(Name = "Hiring Date")]
-        public DateTime HiringDate { get; set; }
+        public DateOnly HiringDate { get; set; }
 
         public Gender Gender { get; set; }
 

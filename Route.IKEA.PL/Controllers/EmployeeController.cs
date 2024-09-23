@@ -22,6 +22,7 @@ namespace Route.IKEA.PL.Controllers
         #endregion
 
         #region Index
+
         [HttpGet]
         public IActionResult Index(string searchTerm)
         {
@@ -31,6 +32,7 @@ namespace Route.IKEA.PL.Controllers
 
             return View(employees);
         }
+
         #endregion
 
         #region Create
@@ -98,24 +100,26 @@ namespace Route.IKEA.PL.Controllers
             if (employee is null)
                 return NotFound();
 
-            return View(new EmployeeEditViewModel()
+            return View(new UpdatedEmployeeDto()
             {
                 Name = employee.Name,
                 Age = employee.Age,
-                Address = employee.Address,
-                Salary = employee.Salary,
-                IsActive = employee.IsActive,
                 Email = employee.Email,
+                Address = employee.Address,
+                EmployeeType = employee.EmployeeType,
+                Salary = employee.Salary,
                 Gender = employee.Gender,
-                EmployeeType = employee.EmployeeType
+                HiringDate = employee.HiringDate,
+                IsActive = employee.IsActive,
+                PhoneNumber = employee.PhoneNumber,
             });
         }
 
         [HttpPost]
-        public IActionResult Edit([FromRoute] int id, EmployeeEditViewModel employeeVM)
+        public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto employee)
         {
             if (!ModelState.IsValid)
-                return View(employeeVM);
+                return View(employee);
 
             var message = string.Empty;
             try
@@ -123,13 +127,17 @@ namespace Route.IKEA.PL.Controllers
                 var employeeToUpdate = new UpdatedEmployeeDto()
                 {
                     Id = id,
-                    Name = employeeVM.Name,
-                    Age = employeeVM.Age,
-                    Address = employeeVM.Address,
-                    Salary = employeeVM.Salary,
-                    IsActive = employeeVM.IsActive,
-                    Email = employeeVM.Email,
-                   
+                    Name = employee.Name,
+                    Age = employee.Age,
+                    Email = employee.Email,
+                    Address = employee.Address,
+                    EmployeeType = employee.EmployeeType,
+                    Salary = employee.Salary,
+                    Gender = employee.Gender,
+                    HiringDate = employee.HiringDate,
+                    IsActive = employee.IsActive,
+                    PhoneNumber = employee.PhoneNumber,
+
                 };
 
                 var updated = _employeeService.UpdateEmployee(employeeToUpdate) > 0;
@@ -144,7 +152,7 @@ namespace Route.IKEA.PL.Controllers
             }
 
             ModelState.AddModelError(string.Empty, message);
-            return View(employeeVM);
+            return View(employee);
         }
         #endregion
 

@@ -53,9 +53,9 @@ namespace Route.IKEA.BLL.Services.Employees
             return _employeeRepository.GetAll()
                 .Select(e => new EmployeeDto
                 {
+                    Name= e.Name,
                     Id = e.Id,
                     Age = e.Age,
-                    Address = e.Address,
                     Salary = e.Salary,
                     IsActive = e.IsActive,
                     Email = e.Email,
@@ -73,13 +73,21 @@ namespace Route.IKEA.BLL.Services.Employees
             return new EmployeeDetailsDto
             {
                 Id = employee.Id,
+                Name = employee.Name,
                 Age = employee.Age,
                 Address = employee.Address,
-                Salary = employee.Salary,
                 IsActive = employee.IsActive,
                 Email = employee.Email,
-                Gender = employee.Gender.ToString(),
-                EmployeeType = employee.EmployeeType.ToString()
+                PhoneNumber = employee.PhoneNumber,
+                HiringDate = employee.HiringDate,
+                Gender = employee.Gender,
+                EmployeeType = employee.EmployeeType,
+                Salary = employee.Salary,
+                CreatedOn = employee.CreatedOn,
+
+                CreatedBy = 1,
+                LastModifiedBy = 1,
+                LastModifiedOn = employee.LastModifiedOn,
             };
         }
 
@@ -94,7 +102,6 @@ namespace Route.IKEA.BLL.Services.Employees
             {
                 Id = e.Id,
                 Age = e.Age,
-                Address = e.Address,
                 Salary = e.Salary,
                 IsActive = e.IsActive,
                 Email = e.Email,
