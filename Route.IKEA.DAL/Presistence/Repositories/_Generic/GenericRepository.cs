@@ -21,7 +21,7 @@ namespace Route.IKEA.DAL.Presistence.Repositories._Generic
         public IEnumerable<T> GetAll(bool withAsNoTracking = true)
         {
             return withAsNoTracking
-                ? _dbContext.Set<T>().AsNoTracking().ToList()
+                ? _dbContext.Set<T>().Where(X => X.IsDeleted != true).AsNoTracking().ToList()
                 : _dbContext.Set<T>().ToList();
         }
 
@@ -38,7 +38,8 @@ namespace Route.IKEA.DAL.Presistence.Repositories._Generic
 
         public int Delete(T entity)
         {
-            _dbContext.Set<T>().Remove(entity);
+            entity.IsDeleted = true;
+            _dbContext.Update(entity);
             return _dbContext.SaveChanges();
         }
 
