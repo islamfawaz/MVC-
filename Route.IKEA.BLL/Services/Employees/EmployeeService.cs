@@ -33,6 +33,7 @@ namespace Route.IKEA.BLL.Services.Employees
                 Gender = entity.Gender,
                 EmployeeType = entity.EmployeeType,
                 Salary = entity.Salary,
+                DepartmentId = entity.DepartmentId,
 
                 CreatedOn = DateTime.UtcNow,
 
@@ -67,7 +68,10 @@ namespace Route.IKEA.BLL.Services.Employees
                     IsActive = employee.IsActive,
                     Email = employee.Email,
                     Gender = employee.Gender.ToString(),
-                    EmployeeType = employee.EmployeeType.ToString()
+                    EmployeeType = employee.EmployeeType.ToString(),
+                    DepartmentId= employee.DepartmentId,
+                    DepartmentName = employee.Department!.Name
+                    
                 }).ToList();
 
             return employees;
@@ -93,6 +97,8 @@ namespace Route.IKEA.BLL.Services.Employees
                 EmployeeType = employee.EmployeeType,
                 Salary = employee.Salary,
                 CreatedOn = employee.CreatedOn,
+                DepartmentId = employee.DepartmentId,
+                DepartmentName = employee.Department!.Name,
 
                 CreatedBy = 1,
                 LastModifiedBy = 1,
@@ -138,6 +144,7 @@ namespace Route.IKEA.BLL.Services.Employees
             employee.HiringDate = entity.HiringDate;
             employee.Gender = entity.Gender;
             employee.EmployeeType = entity.EmployeeType;
+            employee.DepartmentId = entity.DepartmentId;
 
             return _employeeRepository.Update(employee);
         }

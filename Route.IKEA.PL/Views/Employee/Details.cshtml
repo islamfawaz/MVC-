@@ -56,6 +56,21 @@
                 <input asp-for="PhoneNumber" class="form-control" readonly />
             </div>
 
+            <div class="form-group ">
+                <label class="col-form-label" asp-for="DepartmentName"></label>
+                @if(Model.DepartmentId == null)
+                {
+                <input value="Null" class="form-control" readonly />
+                }
+                else 
+                {
+                <input asp-for="DepartmentName" class="form-control" readonly />
+                }
+            </div>
+
+
+            
+
             <div class="d-flex justify-content-between p-4">
 
                 <div class="form-check ">

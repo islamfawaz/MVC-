@@ -22,5 +22,10 @@ namespace Route.IKEA.BLL.Models
         public string? Email { get; set; }
         public string Gender { get; set; } = null!;
         public string EmployeeType { get; set; } = null!;
+        [Display(Name = "Department Id")]
+        public int? DepartmentId { get; set; }
+
+        [Display(Name = "Department Name")]
+        public string? DepartmentName { get; set; }
     }
 }

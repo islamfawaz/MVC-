@@ -35,6 +35,7 @@ namespace Route.IKEA.BLL.Models
         [EnumNotDefault(ErrorMessage = "Please select EmployeeType")]
         public EmployeeType EmployeeType { get; set; }
         public DateTime CreationDate { get; set; }
-
+        [Display(Name = "Department")]
+        public int? DepartmentId { get; set; }
     }
 }
