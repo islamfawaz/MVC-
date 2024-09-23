@@ -47,7 +47,9 @@ namespace Route.IKEA.BLL.Services.Departments
 
         public IEnumerable<DepartmentDto> GetAllDepartments()
         {
-            var department = _departmentRepository.GetAllAsIQueryable().Select(department => new DepartmentDto
+            var department = _departmentRepository.GetAllAsIQueryable()
+                .Where(d => d.IsDeleted != true)
+                .Select(department => new DepartmentDto
             {
                 Id = department.Id,
                 Code = department.Code,

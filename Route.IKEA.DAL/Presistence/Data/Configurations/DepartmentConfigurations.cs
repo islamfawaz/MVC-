@@ -12,6 +12,11 @@ internal class DepartmentConfigurations : IEntityTypeConfiguration<Department>
         builder.Property(D => D.CreatedOn).HasDefaultValueSql("GETUTCDATE()");
         builder.Property(D => D.LastModifiedOn).HasComputedColumnSql("GETUTCDATE()");
 
+        builder.HasMany(D => D.Employees)
+               .WithOne(E => E.Department)
+               .HasForeignKey(E=>E.DepartmentId)
+               .OnDelete(DeleteBehavior.SetNull);
+
 
     }
 }

@@ -1,0 +1,40 @@
+﻿
+
+@model DepartmentEditViewModel
+
+
+
+<form asp-action="@ViewBag.Action" method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    <div class="card">
+        <div class="card-header">
+            <h4>Department Information</h4>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label asp-for="Code" class="form-label">Department Code</label>
+                <input asp-for="Code" class="form-control" placeholder="Enter department code" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Department Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Enter department name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" placeholder="Enter department description" rows="3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CreationDate" class="form-label">Creation Date</label>
+                <input asp-for="CreationDate" type="date" class="form-control" />
+                <span asp-validation-for="CreationDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-action="Index" class="btn btn-secondary">Back To List</a>
+        </div>
+    </div>
+</form>

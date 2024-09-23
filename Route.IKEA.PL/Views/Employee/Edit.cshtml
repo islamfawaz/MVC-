@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Edit";
+    var Departments = new SelectList(ViewData["Departments"] as IEnumerable<DepartmentDto>, "Id", "Name");
+
 }
 
 
@@ -58,6 +60,17 @@
         <span asp-validation-for="HiringDate" class="text-danger"></span>
     </div>
 
+    <div class="form-group ">
+        <label class="col-form-label" asp-for="DepartmentId"></label>
+        <select asp-for="DepartmentId" asp-items="@Departments" class="form-control">
+            <option value="@null">...Choose </option>
+        </select>
+
+    </div>
+
+
+
+
 
     <div class="d-flex justify-content-between p-4">
 
@@ -107,3 +120,8 @@
 
     </div>
 </form>
+
+
+@section ValidationScripts {
+    <partial name="_ValidationScriptsPartial" />
+}

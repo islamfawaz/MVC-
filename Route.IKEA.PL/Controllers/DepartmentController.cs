@@ -30,6 +30,21 @@ namespace Route.IKEA.PL.Controllers
         {
             ViewData["SearchTerm"] = searchTerm;
 
+            // View's Dictionary : Pass Data from Controller [Action] to view (from view)
+            //
+            // 1. ViewData is a dictionary type property (introduced in asp.net Framework 3.0
+            // => it helps us to transfer the data from controller [action] to view 
+
+            //ViewData["Message"] = "Hello VieData";
+
+            // 2. ViewBag is a dynamic type property ( introduced in asp.net framework 4.0
+            //  => it helps us to transfer the data from controller [Action] to View
+
+            // View.Message = "Hello ViewBag";
+            // View.Message = new {Id= 10 , Name = "Ali"};
+
+
+
             var departments = string.IsNullOrWhiteSpace(searchTerm) ? _departmentService.GetAllDepartments() : _departmentService.SearchDepartments(searchTerm);
 
             return View(departments);
@@ -48,7 +63,8 @@ namespace Route.IKEA.PL.Controllers
 
 
         [HttpPost]
-        public IActionResult Create(CreateDepartmentDto department)
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(DepartmentEditViewModel department)
         {
             if (!ModelState.IsValid)
                 return View(department);
@@ -58,14 +74,31 @@ namespace Route.IKEA.PL.Controllers
             try
             {
 
-                var Result = _departmentService.CreateDepartment(department);
+                var createdDepartment = new CreateDepartmentDto()
+                {
+                    Name = department.Name,
+                    Code = department.Code,
+                    CreationDate = department.CreationDate,
+                    Description = department.Description,
+                };
 
-                if (Result > 0)
-                    return RedirectToAction(nameof(Index));
+                var created = _departmentService.CreateDepartment(createdDepartment) > 0;
+
+                // 3. TempData is a property of type Dictionary object (Introduced in asp.net framework 3.5)
+                //     => used to transfer data between two active requests 
+
+
+                if (created)
+                TempData["message"] = "Department Is created";
+
                 else
-                    message = "Department is not Created";
+                   TempData["message"] = "Department Is Not created";
+                    //message = "Department is not Created";
+
+              
+
                 ModelState.AddModelError(string.Empty, message);
-                return View(department);
+                    return RedirectToAction(nameof(Index));
 
 
             }
@@ -117,6 +150,7 @@ namespace Route.IKEA.PL.Controllers
         }
 
         [HttpPost]//
+        [ValidateAntiForgeryToken]
 
         public IActionResult Edit([FromRoute] int id, DepartmentEditViewModel departmentVM)
         {
@@ -167,6 +201,8 @@ namespace Route.IKEA.PL.Controllers
             return View(department);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
+
         public IActionResult Delete(int id)
         {
             var message = string.Empty;

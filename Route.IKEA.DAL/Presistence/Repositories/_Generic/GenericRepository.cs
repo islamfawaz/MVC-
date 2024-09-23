@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace Route.IKEA.DAL.Presistence.Repositories._Generic
 {
-    public class GenericRepository<T> where T : ModelBase
+    public class GenericRepository<T> :IGenericRepository<T> where T : ModelBase
     {
         private protected readonly ApplicationDbContext _dbContext;
 
@@ -53,7 +53,10 @@ namespace Route.IKEA.DAL.Presistence.Repositories._Generic
         {
             return _dbContext.Set<T>();
         }
-
+        public IEnumerable<T> GetAllAsIEnumerable()
+        {
+            return _dbContext.Set<T>();
+        }
         public IEnumerable<T> SearchByName(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -66,5 +69,6 @@ namespace Route.IKEA.DAL.Presistence.Repositories._Generic
                 .ToList();
         }
 
+        
     }
 }

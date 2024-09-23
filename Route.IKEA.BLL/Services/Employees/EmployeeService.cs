@@ -33,6 +33,7 @@ namespace Route.IKEA.BLL.Services.Employees
                 Gender = entity.Gender,
                 EmployeeType = entity.EmployeeType,
                 Salary = entity.Salary,
+                DepartmentId = entity.DepartmentId,
 
                 CreatedOn = DateTime.UtcNow,
 
@@ -56,18 +57,24 @@ namespace Route.IKEA.BLL.Services.Employees
 
         public IEnumerable<EmployeeDto> GetAllEmployee()
         {
-            return _employeeRepository.GetAll()
-                .Select(e => new EmployeeDto
+            var employees = _employeeRepository.GetAllAsIQueryable()
+                .Where(E=>E.IsDeleted != true)
+                .Select(employee => new EmployeeDto
                 {
-                    Name= e.Name,
-                    Id = e.Id,
-                    Age = e.Age,
-                    Salary = e.Salary,
-                    IsActive = e.IsActive,
-                    Email = e.Email,
-                    Gender = e.Gender.ToString(),
-                    EmployeeType = e.EmployeeType.ToString()
-                });
+                    Id = employee.Id,
+                    Name= employee.Name,
+                    Age = employee.Age,
+                    Salary = employee.Salary,
+                    IsActive = employee.IsActive,
+                    Email = employee.Email,
+                    Gender = employee.Gender.ToString(),
+                    EmployeeType = employee.EmployeeType.ToString(),
+                    DepartmentId= employee.DepartmentId,
+                    DepartmentName = employee.Department!.Name
+                    
+                }).ToList();
+
+            return employees;
         }
 
         public EmployeeDetailsDto? GetEmployeeById(int id)
@@ -90,6 +97,8 @@ namespace Route.IKEA.BLL.Services.Employees
                 EmployeeType = employee.EmployeeType,
                 Salary = employee.Salary,
                 CreatedOn = employee.CreatedOn,
+                DepartmentId = employee.DepartmentId,
+                DepartmentName = employee.Department!.Name,
 
                 CreatedBy = 1,
                 LastModifiedBy = 1,
@@ -135,6 +144,7 @@ namespace Route.IKEA.BLL.Services.Employees
             employee.HiringDate = entity.HiringDate;
             employee.Gender = entity.Gender;
             employee.EmployeeType = entity.EmployeeType;
+            employee.DepartmentId = entity.DepartmentId;
 
             return _employeeRepository.Update(employee);
         }
