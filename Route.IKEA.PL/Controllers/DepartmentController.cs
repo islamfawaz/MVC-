@@ -30,6 +30,21 @@ namespace Route.IKEA.PL.Controllers
         {
             ViewData["SearchTerm"] = searchTerm;
 
+            // View's Dictionary : Pass Data from Controller [Action] to view (from view)
+            //
+            // 1. ViewData is a dictionary type property (introduced in asp.net Framework 3.0
+            // => it helps us to transfer the data from controller [action] to view 
+
+            //ViewData["Message"] = "Hello VieData";
+
+            // 2. ViewBag is a dynamic type property ( introduced in asp.net framework 4.0
+            //  => it helps us to transfer the data from controller [Action] to View
+
+            // View.Message = "Hello ViewBag";
+            // View.Message = new {Id= 10 , Name = "Ali"};
+
+
+
             var departments = string.IsNullOrWhiteSpace(searchTerm) ? _departmentService.GetAllDepartments() : _departmentService.SearchDepartments(searchTerm);
 
             return View(departments);
