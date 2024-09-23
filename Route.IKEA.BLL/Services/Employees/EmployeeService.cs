@@ -26,13 +26,19 @@ namespace Route.IKEA.BLL.Services.Employees
                 Name = entity.Name,
                 Age = entity.Age,
                 Address = entity.Address,
-                Salary = entity.Salary,
                 IsActive = entity.IsActive,
                 Email = entity.Email,
                 PhoneNumber = entity.PhoneNumber,
                 HiringDate = entity.HiringDate,
                 Gender = entity.Gender,
-                EmployeeType = entity.EmployeeType
+                EmployeeType = entity.EmployeeType,
+                Salary = entity.Salary,
+
+                CreatedOn = DateTime.UtcNow,
+
+                CreatedBy = 1,
+                LastModifiedBy = 1,
+                LastModifiedOn = DateTime.UtcNow,
             };
 
             return _employeeRepository.Add(employee);
