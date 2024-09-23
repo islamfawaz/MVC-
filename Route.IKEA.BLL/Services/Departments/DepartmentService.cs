@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Route.IKEA.BLL.Models;
+using Route.IKEA.BLL.Models.Departments;
 using Route.IKEA.DAL.Entities.Department;
 using Route.IKEA.DAL.Presistence.Repositories.Departments;
 using System;
@@ -45,9 +45,9 @@ namespace Route.IKEA.BLL.Services.Departments
 
         }
 
-        public IEnumerable<DepartmentReturnDto> GetAllDepartments()
+        public IEnumerable<DepartmentDto> GetAllDepartments()
         {
-            var department = _departmentRepository.GetAllAsIQueryable().Select(department => new DepartmentReturnDto
+            var department = _departmentRepository.GetAllAsIQueryable().Select(department => new DepartmentDto
             {
                 Id = department.Id,
                 Code = department.Code,
@@ -95,16 +95,16 @@ namespace Route.IKEA.BLL.Services.Departments
             return _departmentRepository.Update(department);
         }
 
-        public IEnumerable<DepartmentReturnDto> SearchDepartments(string name)
+        public IEnumerable<DepartmentDto> SearchDepartments(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentException("Search term cannot be empty or null.", nameof(name));
             }
 
-            var departments = _departmentRepository.SearchDepartmentsByName(name);
+            var departments = _departmentRepository.SearchByName(name);
 
-            var Searched = departments.Select(d => new DepartmentReturnDto
+            var Searched = departments.Select(d => new DepartmentDto
             {
                 Id = d.Id,
                 Name = d.Name

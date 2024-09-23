@@ -8,6 +8,7 @@ namespace Route.IKEA.DAL.Entities.Department
 {
     public class ModelBase
     {
+        public string Name { get; set; }=null!;
         public int Id { get; set; }
         public bool IsDeleted { get; set; }
         public int CreatedBy { get; set; }

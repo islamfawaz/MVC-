@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Route.IKEA.DAL.Entities.Department;
+using Route.IKEA.DAL.Entities.Employees;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,5 +27,6 @@ namespace Route.IKEA.DAL.Presistence.Data
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Employee> Employees { get; set; }
     }
 }
