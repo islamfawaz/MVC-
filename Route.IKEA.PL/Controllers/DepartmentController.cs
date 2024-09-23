@@ -74,7 +74,7 @@ namespace Route.IKEA.PL.Controllers
             try
             {
 
-                var DepartmentToUpdate = new CreateDepartmentDto()
+                var createdDepartment = new CreateDepartmentDto()
                 {
                     Name = department.Name,
                     Code = department.Code,
@@ -82,14 +82,23 @@ namespace Route.IKEA.PL.Controllers
                     Description = department.Description,
                 };
 
-                var Result = _departmentService.CreateDepartment(DepartmentToUpdate) > 0;
+                var created = _departmentService.CreateDepartment(createdDepartment) > 0;
 
-                if (Result )
-                    return RedirectToAction(nameof(Index));
+                // 3. TempData is a property of type Dictionary object (Introduced in asp.net framework 3.5)
+                //     => used to transfer data between two active requests 
+
+
+                if (created)
+                TempData["message"] = "Department Is created";
+
                 else
-                    message = "Department is not Created";
+                   TempData["message"] = "Department Is Not created";
+                    //message = "Department is not Created";
+
+              
+
                 ModelState.AddModelError(string.Empty, message);
-                return View(department);
+                    return RedirectToAction(nameof(Index));
 
 
             }

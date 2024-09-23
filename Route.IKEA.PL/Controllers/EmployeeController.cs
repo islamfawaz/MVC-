@@ -57,12 +57,11 @@ namespace Route.IKEA.PL.Controllers
                 var result = _employeeService.CreateEmployee(employee);
 
                 if (result > 0)
-                    return RedirectToAction(nameof(Index));
-                else
-                    message = "Employee is not created.";
+                    TempData["message"] = "Employee Is created";
 
-                ModelState.AddModelError(string.Empty, message);
-                return View(employee);
+                else
+                    TempData["message"] = "Employee Is Not created";
+                //message = "Employee is not created.";
             }
             catch (Exception ex)
             {
@@ -71,7 +70,8 @@ namespace Route.IKEA.PL.Controllers
             }
 
             ModelState.AddModelError(string.Empty, message);
-            return View(employee);
+            return RedirectToAction(nameof(Index));
+            //return View(employee);
         }
         #endregion
 
