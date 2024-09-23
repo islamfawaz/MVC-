@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
-    <Folder Include="Presistence\Data\Configurations\" />
-    <Folder Include="Presistence\Data\Migrations\" />
+    <Compile Remove="Persistence\**" />
+    <EmbeddedResource Remove="Persistence\**" />
+    <None Remove="Persistence\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Presistence\Data\Seeds\" />
-    <Folder Include="Presistence\Repositories\" />
   </ItemGroup>
 
   <ItemGroup>

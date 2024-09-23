@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Route.IKEA.BLL.Models.EmployeeDto>
+
+@{
+    ViewData["Title"] = "Employee List";
+}
+
+<h2>Employee List</h2>
+
+<form method="get" asp-action="Index">
+    <div class="form-group">
+        <input type="text" name="searchTerm" value="@ViewData["SearchTerm"]" class="form-control" placeholder="Search by Name" />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a asp-action="Index" class="btn btn-secondary">Clear</a>
+</form>
+
+<table class="table  my-3">
+    <thead class="text-center">
+        <tr>
+            <th>@Html.DisplayNameFor(e => e.Name)</th>
+            <th>@Html.DisplayNameFor(e => e.Email)</th>
+            <th>@Html.DisplayNameFor(e => e.EmployeeType)</th>
+            <th>@Html.DisplayNameFor(e => e.Age)</th>
+            <th>@Html.DisplayNameFor(e => e.Salary)</th>
+            <th>@Html.DisplayNameFor(e => e.IsActive)</th>
+            <th>@Html.DisplayNameFor(e => e.Gender)</th>
+            <th>Details</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@employee.Name</td>
+                <td><a href="mailto:@employee.Email">@employee.Email</a></td>
+                <td>@employee.EmployeeType</td>
+                <td>@employee.Age</td>
+                <td>@employee.Salary.ToString("C")</td>
+                <td> <input asp-for="@employee.IsActive" type="checkbox" class="form-check-input" disabled /> </td>
+                <td>@employee.Gender</td>
+
+                <td>
+                    <a asp-controller="Employee" asp-action="Details" asp-route-id="@employee.Id" class="btn btn-warning text-white">
+                        <i class="fa-solid fa-eye"></i> Details
+                    </a>
+                </td>
+                <td>
+                    <a asp-controller="Employee" asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-success">
+                        <i class="fa-solid fa-pen-to-square"></i> Update
+                    </a>
+                </td>
+                <td>
+                    @*   <a asp-controller="Employee" asp-action="Delete" asp-route-id="@Employee.Id" class="btn btn-danger">
+                <i class="fa-solid fa-trash"></i> Delete
+                </a> *@
+
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+
+                </td>
+            </tr>
+
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Employee</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are You sure to delete this Employee ?
+                        </div>
+                        <div class="modal-footer">
+                            <form asp-action="Delete" asp-route-id="@employee.Id">
+
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-danger">Delete</button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-success">Create New Employee</a>
