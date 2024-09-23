@@ -56,18 +56,21 @@ namespace Route.IKEA.BLL.Services.Employees
 
         public IEnumerable<EmployeeDto> GetAllEmployee()
         {
-            return _employeeRepository.GetAll()
-                .Select(e => new EmployeeDto
+            var employees = _employeeRepository.GetAllAsIQueryable()
+                .Where(E=>E.IsDeleted != true)
+                .Select(employee => new EmployeeDto
                 {
-                    Name= e.Name,
-                    Id = e.Id,
-                    Age = e.Age,
-                    Salary = e.Salary,
-                    IsActive = e.IsActive,
-                    Email = e.Email,
-                    Gender = e.Gender.ToString(),
-                    EmployeeType = e.EmployeeType.ToString()
-                });
+                    Id = employee.Id,
+                    Name= employee.Name,
+                    Age = employee.Age,
+                    Salary = employee.Salary,
+                    IsActive = employee.IsActive,
+                    Email = employee.Email,
+                    Gender = employee.Gender.ToString(),
+                    EmployeeType = employee.EmployeeType.ToString()
+                }).ToList();
+
+            return employees;
         }
 
         public EmployeeDetailsDto? GetEmployeeById(int id)
