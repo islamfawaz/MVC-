@@ -41,26 +41,7 @@
                 <td> <input asp-for="@employee.IsActive" type="checkbox" class="form-check-input" disabled /> </td>
                 <td>@employee.Gender</td>
 
-                <td>
-                    <a asp-controller="Employee" asp-action="Details" asp-route-id="@employee.Id" class="btn btn-warning text-white">
-                        <i class="fa-solid fa-eye"></i> Details
-                    </a>
-                </td>
-                <td>
-                    <a asp-controller="Employee" asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-success">
-                        <i class="fa-solid fa-pen-to-square"></i> Update
-                    </a>
-                </td>
-                <td>
-                    @*   <a asp-controller="Employee" asp-action="Delete" asp-route-id="@Employee.Id" class="btn btn-danger">
-                <i class="fa-solid fa-trash"></i> Delete
-                </a> *@
-
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete">
-                        <i class="fa-solid fa-trash"></i> Delete
-                    </button>
-
-                </td>
+                <partial name="_ButtonPartial" model="employee.Id" />
             </tr>
 
 

@@ -1,0 +1,19 @@
+﻿
+@model int
+
+<td>
+    <a  asp-action="Details" asp-route-id="@Model" class="btn btn-warning text-white">
+        <i class="fa-solid fa-eye"></i> Details
+    </a>
+</td>
+<td>
+    <a  asp-action="Edit" asp-route-id="@Model" class="btn btn-success">
+        <i class="fa-solid fa-pen-to-square"></i> Update
+    </a>
+</td>
+<td>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete">
+        <i class="fa-solid fa-trash"></i> Delete
+    </button>
+
+</td>

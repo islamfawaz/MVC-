@@ -49,7 +49,7 @@ namespace Route.IKEA.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateDepartmentDto department)
+        public IActionResult Create(DepartmentEditViewModel department)
         {
             if (!ModelState.IsValid)
                 return View(department);
@@ -59,9 +59,17 @@ namespace Route.IKEA.PL.Controllers
             try
             {
 
-                var Result = _departmentService.CreateDepartment(department);
+                var DepartmentToUpdate = new CreateDepartmentDto()
+                {
+                    Name = department.Name,
+                    Code = department.Code,
+                    CreationDate = department.CreationDate,
+                    Description = department.Description,
+                };
 
-                if (Result > 0)
+                var Result = _departmentService.CreateDepartment(DepartmentToUpdate) > 0;
+
+                if (Result )
                     return RedirectToAction(nameof(Index));
                 else
                     message = "Department is not Created";
