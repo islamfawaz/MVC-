@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Route.IKEA.BLL.Services.Departments;
 using Route.IKEA.BLL.Services.Employees;
 using Route.IKEA.DAL.Presistence.Data;
 using Route.IKEA.DAL.Presistence.Repositories.Departments;
 using Route.IKEA.DAL.Presistence.Repositories.Employees;
+using Route.IKEA.DAL.Presistence.UnitOfWork;
 using Route.IKEA.PL.Mapping;
 
 namespace Route.IKEA.PL
@@ -25,14 +27,17 @@ namespace Route.IKEA.PL
             });
 
             // Register Department-related services and repositories
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+           // builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
             // Register Employee-related services and repositories
-            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+           // builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
+
             builder.Services.AddAutoMapper(M=>M.AddProfile(new MappingProfile()));
 
+            builder.Services.AddScoped<IUnitOfWork , UnitOfWork>();
             #endregion
 
             var app = builder.Build();

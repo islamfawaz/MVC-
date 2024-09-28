@@ -1,6 +1,7 @@
 ﻿using Route.IKEA.BLL.Models;
 using Route.IKEA.DAL.Entities.Employees;
 using Route.IKEA.DAL.Presistence.Repositories.Employees;
+using Route.IKEA.DAL.Presistence.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace Route.IKEA.BLL.Services.Employees
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public EmployeeService(IEmployeeRepository employeeRepository)
+        public EmployeeService(IUnitOfWork unitOfWork)
         {
-            _employeeRepository = employeeRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public int CreateEmployee(CreateEmployeeDto entity)
@@ -42,22 +43,23 @@ namespace Route.IKEA.BLL.Services.Employees
                 LastModifiedOn = DateTime.UtcNow,
             };
 
-            return _employeeRepository.Add(employee);
+             _unitOfWork.EmployeeRepository.Add(employee);
+            return _unitOfWork.Complete();
         }
 
         public bool DeleteEmployee(int id)
         {
-            var employee = _employeeRepository.GetById(id);
-            if (employee == null)
-                return false;
+            var employeeRepo= _unitOfWork.EmployeeRepository;
+            var employee = employeeRepo.GetById(id);
+            if (employee is { })
+                employeeRepo.Delete(employee);
 
-            _employeeRepository.Delete(employee);
-            return true;
+            return _unitOfWork.Complete()>0;
         }
 
         public IEnumerable<EmployeeDto> GetAllEmployee()
         {
-            var employees = _employeeRepository.GetAllAsIQueryable()
+            var employees = _unitOfWork.EmployeeRepository.GetAllAsIQueryable()
                 .Where(E=>E.IsDeleted != true)
                 .Select(employee => new EmployeeDto
                 {
@@ -79,7 +81,7 @@ namespace Route.IKEA.BLL.Services.Employees
 
         public EmployeeDetailsDto? GetEmployeeById(int id)
         {
-            var employee = _employeeRepository.GetById(id);
+            var employee = _unitOfWork.EmployeeRepository.GetById(id);
             if (employee == null)
                 return null;
 
@@ -112,7 +114,7 @@ namespace Route.IKEA.BLL.Services.Employees
             if (string.IsNullOrWhiteSpace(name))
                 return Enumerable.Empty<EmployeeDto>();
 
-            var employees = _employeeRepository.SearchByName(name);
+            var employees = _unitOfWork.EmployeeRepository.SearchByName(name);
 
             return employees.Select(e => new EmployeeDto
             {
@@ -134,7 +136,7 @@ namespace Route.IKEA.BLL.Services.Employees
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
-            var employee = _employeeRepository.GetById(entity.Id);
+            var employee = _unitOfWork.EmployeeRepository.GetById(entity.Id);
             if (employee == null)
                 throw new ArgumentException("Employee not found");
 
@@ -150,7 +152,8 @@ namespace Route.IKEA.BLL.Services.Employees
             employee.EmployeeType = entity.EmployeeType;
             employee.DepartmentId = entity.DepartmentId;
 
-            return _employeeRepository.Update(employee);
+             _unitOfWork.EmployeeRepository.Update(employee);
+            return _unitOfWork.Complete();
         }
     }
 }
