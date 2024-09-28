@@ -115,6 +115,8 @@ namespace Route.IKEA.BLL.Services.Employees
 
             return employees.Select(e => new EmployeeDto
             {
+              
+                 Name = e.Name,
                 Id = e.Id,
                 Age = e.Age,
                 Salary = e.Salary,
@@ -122,6 +124,7 @@ namespace Route.IKEA.BLL.Services.Employees
                 Email = e.Email,
                 Gender = e.Gender.ToString(),
                 EmployeeType = e.EmployeeType.ToString()
+                
             });
         }
 

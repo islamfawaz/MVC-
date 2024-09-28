@@ -25,30 +25,20 @@ namespace Route.IKEA.PL.Controllers
 
         #region Index
         [HttpGet]
-
         public IActionResult Index(string searchTerm)
         {
             ViewData["SearchTerm"] = searchTerm;
 
-            // View's Dictionary : Pass Data from Controller [Action] to view (from view)
-            //
-            // 1. ViewData is a dictionary type property (introduced in asp.net Framework 3.0
-            // => it helps us to transfer the data from controller [action] to view 
+            var employees = string.IsNullOrWhiteSpace(searchTerm) ? _departmentService.GetAllDepartments() : _departmentService.SearchDepartments(searchTerm);
 
-            //ViewData["Message"] = "Hello VieData";
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("Partials/DepartmentTablePartialView", employees);
+            }
 
-            // 2. ViewBag is a dynamic type property ( introduced in asp.net framework 4.0
-            //  => it helps us to transfer the data from controller [Action] to View
-
-            // View.Message = "Hello ViewBag";
-            // View.Message = new {Id= 10 , Name = "Ali"};
-
-
-
-            var departments = string.IsNullOrWhiteSpace(searchTerm) ? _departmentService.GetAllDepartments() : _departmentService.SearchDepartments(searchTerm);
-
-            return View(departments);
+            return View(employees);
         }
+
         #endregion
 
         #region Create

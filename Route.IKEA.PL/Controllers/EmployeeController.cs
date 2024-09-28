@@ -28,10 +28,15 @@ namespace Route.IKEA.PL.Controllers
 
         [HttpGet]
         public IActionResult Index(string searchTerm)
-        {
+     {
             ViewData["SearchTerm"] = searchTerm;
 
             var employees = string.IsNullOrWhiteSpace(searchTerm) ? _employeeService.GetAllEmployee() : _employeeService.SearchEmployeeByName(searchTerm);
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest") 
+            {
+                return PartialView("PartialViews/EmployeeTablePartialView", employees);
+            }
 
             return View(employees);
         }
