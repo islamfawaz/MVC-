@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Route.IKEA.BLL.Models;
 using Route.IKEA.BLL.Models.Departments;
 using Route.IKEA.BLL.Services.Departments;
@@ -14,12 +15,15 @@ namespace Route.IKEA.PL.Controllers
         private readonly IDepartmentService _departmentService;
         private readonly ILogger<DepartmentController> _logger;
         private readonly IHostEnvironment _environment;
+        private readonly IMapper _mapper;
 
-        public DepartmentController(IDepartmentService departmentService, ILogger<DepartmentController> logger, IHostEnvironment environment)
+        public DepartmentController(IDepartmentService departmentService, ILogger<DepartmentController> logger, IHostEnvironment environment, IMapper mapper)
         {
             _departmentService = departmentService;
             _logger = logger;
             _environment = environment;
+            _mapper = mapper;
+
         }
         #endregion
 
@@ -49,30 +53,22 @@ namespace Route.IKEA.PL.Controllers
         }
 
 
-
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(DepartmentEditViewModel department)
+        public IActionResult Create(DepartmentEditViewModel departmentVM)
         {
             if (!ModelState.IsValid)
-                return View(department);
+                return View(departmentVM);
 
             var message = string.Empty;
 
             try
             {
 
-                var createdDepartment = new CreateDepartmentDto()
-                {
-                    Name = department.Name,
-                    Code = department.Code,
-                    CreationDate = department.CreationDate,
-                    Description = department.Description,
-                };
+              
+                var CreatedDepartment=_mapper.Map<CreateDepartmentDto>(departmentVM);
 
-                var created = _departmentService.CreateDepartment(createdDepartment) > 0;
+                var created = _departmentService.CreateDepartment(CreatedDepartment) > 0;
 
                 // 3. TempData is a property of type Dictionary object (Introduced in asp.net framework 3.5)
                 //     => used to transfer data between two active requests 
@@ -99,7 +95,7 @@ namespace Route.IKEA.PL.Controllers
                 message = _environment.IsDevelopment() ? ex.Message : "an errror has occured during updating the department: (";
             }
             ModelState.AddModelError(string.Empty, message);
-            return View(department);
+            return View(departmentVM);
         }
 
 
@@ -130,13 +126,9 @@ namespace Route.IKEA.PL.Controllers
             if (department is null)
                 return NotFound();
 
-            return View(new DepartmentEditViewModel()
-            {
-                Name = department.Name,
-                Code = department.Code,
-                CreationDate = department.CreationDate,
-                Description = department.Description,
-            });
+            var departmentVM = _mapper.Map<DepartmentDetailsDto,DepartmentEditViewModel>(department);
+            return View(departmentVM);
+           
         }
 
         [HttpPost]//
@@ -149,16 +141,17 @@ namespace Route.IKEA.PL.Controllers
             var message = string.Empty;
             try
             {
-                var DepartmentToUpdate = new UpdatedDepartmentDto()
-                {
-                    Id = id,
-                    Name = departmentVM.Name,
-                    Code = departmentVM.Code,
-                    CreationDate = departmentVM.CreationDate,
-                    Description = departmentVM.Description,
-                };
+                //var DepartmentToUpdate = new UpdatedDepartmentDto()
+                //{
+                //    Id = id,
+                //    Name = departmentVM.Name,
+                //    Code = departmentVM.Code,
+                //    CreationDate = departmentVM.CreationDate,
+                //    Description = departmentVM.Description,
+                //};
+                var UpdatedDepartment = _mapper.Map<UpdatedDepartmentDto>(departmentVM);
 
-                var Updated = _departmentService.UpdateDepartment(DepartmentToUpdate) > 0;
+                var Updated = _departmentService.UpdateDepartment(UpdatedDepartment) > 0;
                 if (Updated)
                     return RedirectToAction(nameof(Index));
                 message = "an errror has occured during updating the department :(";

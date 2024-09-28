@@ -98,12 +98,13 @@ namespace Route.IKEA.BLL.Services.Employees
                 Salary = employee.Salary,
                 CreatedOn = employee.CreatedOn,
                 DepartmentId = employee.DepartmentId,
-                DepartmentName = employee.Department!.Name,
+                DepartmentName = employee.Department != null ? employee.Department.Name : "No Department Assigned",
 
                 CreatedBy = 1,
                 LastModifiedBy = 1,
                 LastModifiedOn = employee.LastModifiedOn,
             };
+
         }
 
         public IEnumerable<EmployeeDto> SearchEmployeeByName(string name)

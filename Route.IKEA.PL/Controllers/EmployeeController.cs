@@ -4,6 +4,7 @@ using Route.IKEA.BLL.Services.Employees;
 using Route.IKEA.PL.ViewModels.Employees;
 using Microsoft.Extensions.Logging;
 using Route.IKEA.BLL.Services.Departments;
+using AutoMapper;
 
 namespace Route.IKEA.PL.Controllers
 {
@@ -13,14 +14,15 @@ namespace Route.IKEA.PL.Controllers
         private readonly IEmployeeService _employeeService;
         private readonly ILogger<EmployeeController> _logger;
         private readonly IHostEnvironment _environment;
-
-        public EmployeeController(IEmployeeService employeeService,
-                                  ILogger<EmployeeController> logger,
-                                  IHostEnvironment environment)
+        private readonly IMapper _mapper;
+        public EmployeeController(IEmployeeService employeeService,ILogger<EmployeeController> logger,
+                                  IHostEnvironment environment,
+                                  IMapper mapper)
         {
             _employeeService = employeeService;
             _logger = logger;
             _environment = environment;
+            _mapper = mapper;
         }
         #endregion
 
@@ -112,20 +114,11 @@ namespace Route.IKEA.PL.Controllers
             if (employee is null)
                 return NotFound();
             ViewData["Departments"] = departmentService.GetAllDepartments();
+            
+            var employeeDto=_mapper.Map<UpdatedEmployeeDto>(employee);
 
-            return View(new UpdatedEmployeeDto()
-            {
-                Name = employee.Name,
-                Age = employee.Age,
-                Email = employee.Email,
-                Address = employee.Address,
-                EmployeeType = employee.EmployeeType,
-                Salary = employee.Salary,
-                Gender = employee.Gender,
-                HiringDate = employee.HiringDate,
-                IsActive = employee.IsActive,
-                PhoneNumber = employee.PhoneNumber,
-            });
+            return View(employeeDto);
+         
         }
 
         [HttpPost]
@@ -139,23 +132,24 @@ namespace Route.IKEA.PL.Controllers
             var message = string.Empty;
             try
             {
-                var employeeToUpdate = new UpdatedEmployeeDto()
-                {
-                    Id = id,
-                    Name = employee.Name,
-                    Age = employee.Age,
-                    Email = employee.Email,
-                    Address = employee.Address,
-                    EmployeeType = employee.EmployeeType,
-                    Salary = employee.Salary,
-                    Gender = employee.Gender,
-                    HiringDate = employee.HiringDate,
-                    IsActive = employee.IsActive,
-                    PhoneNumber = employee.PhoneNumber,
+                var employeeVM=_mapper.Map<UpdatedEmployeeDto>(employee);
+                //var employeeToUpdate = new UpdatedEmployeeDto()
+                //{
+                //    Id = id,
+                //    Name = employee.Name,
+                //    Age = employee.Age,
+                //    Email = employee.Email,
+                //    Address = employee.Address,
+                //    EmployeeType = employee.EmployeeType,
+                //    Salary = employee.Salary,
+                //    Gender = employee.Gender,
+                //    HiringDate = employee.HiringDate,
+                //    IsActive = employee.IsActive,
+                //    PhoneNumber = employee.PhoneNumber,
 
-                };
+                //};
 
-                var updated = _employeeService.UpdateEmployee(employeeToUpdate) > 0;
+                var updated = _employeeService.UpdateEmployee(employeeVM) > 0;
                 if (updated)
                     return RedirectToAction(nameof(Index));
                 message = "An error occurred during employee update.";

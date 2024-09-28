@@ -4,6 +4,7 @@ using Route.IKEA.BLL.Services.Employees;
 using Route.IKEA.DAL.Presistence.Data;
 using Route.IKEA.DAL.Presistence.Repositories.Departments;
 using Route.IKEA.DAL.Presistence.Repositories.Employees;
+using Route.IKEA.PL.Mapping;
 
 namespace Route.IKEA.PL
 {
@@ -30,6 +31,7 @@ namespace Route.IKEA.PL
             // Register Employee-related services and repositories
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddAutoMapper(M=>M.AddProfile(new MappingProfile()));
 
             #endregion
 
