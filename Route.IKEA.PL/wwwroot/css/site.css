@@ -20,3 +20,13 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.photo {
+    width: 145px;
+    height: 145px;
+    border-radius: 100px;
+    object-fit: cover;
+    object-position: center;
+    vertical-align: middle;
+    overflow: clip;
+}

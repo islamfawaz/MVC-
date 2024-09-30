@@ -107,11 +107,10 @@ namespace Route.IKEA.BLL.Services.Employees
                 CreatedOn = employee.CreatedOn,
                 DepartmentId = employee.DepartmentId,
                 DepartmentName = employee.Department != null ? employee.Department.Name : "No Department Assigned",
+                Image =employee.Image,
                 CreatedBy = 1,
                 LastModifiedBy = 1,
                 LastModifiedOn = employee.LastModifiedOn,
-                Image = employee.Image,
-
             };
 
         }
