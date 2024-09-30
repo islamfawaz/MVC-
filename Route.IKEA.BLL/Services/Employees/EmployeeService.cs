@@ -46,7 +46,7 @@ namespace Route.IKEA.BLL.Services.Employees
                 LastModifiedOn = DateTime.UtcNow,
             };
             if(entity.Image is not null)
-            _attachmentService.Upload(entity.Image, "images");
+           employee.Image= _attachmentService.Upload(entity.Image, "images");
 
             _unitOfWork.EmployeeRepository.Add(employee);
             return await _unitOfWork.CompleteAsync();
