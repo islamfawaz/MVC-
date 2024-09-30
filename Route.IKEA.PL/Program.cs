@@ -1,3 +1,4 @@
+using LinkDev.IKEA.BLL.Common.Services.Attachments;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Route.IKEA.BLL.Services.Departments;
@@ -38,6 +39,7 @@ namespace Route.IKEA.PL
             builder.Services.AddAutoMapper(M=>M.AddProfile(new MappingProfile()));
 
             builder.Services.AddScoped<IUnitOfWork , UnitOfWork>();
+            builder.Services.AddTransient<IAttachmentService, AttachmentService>();
             #endregion
 
             var app = builder.Build();

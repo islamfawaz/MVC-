@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.BLL.Common.Services.Attachments
 {
-    internal class AttachmentService : IAttachmentService
+    public class AttachmentService : IAttachmentService
     {
         private readonly List<string> _allowedExtensions = new() { ".png", ".jpg", ".jpeg" };
         private const int _allowedMaxSize = 2_097_152;
@@ -16,37 +16,28 @@ namespace LinkDev.IKEA.BLL.Common.Services.Attachments
         {
             var extension = Path.GetExtension(file.FileName);
 
-            if (_allowedExtensions.Contains(extension))
+            // Check if the extension is allowed.
+            if (!_allowedExtensions.Contains(extension))
                 return null;
 
+            // Check if the file size is within the allowed limit.
             if (file.Length > _allowedMaxSize)
                 return null;
 
-            //var folderPath = $"{Directory.GetCurrentDirectory}\\wwwroot\\Files\\{folderName}"; 
-
+            // Ensure the folder exists or create it.
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files", folderName);
-
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
 
-
-            var fileName = $"{Guid.NewGuid()}{extension}";        // Guid to unique the file name
-
-            var filePath = Path.Combine(folderPath, fileName);    // File Location Placed
-
-
-            // Streaming => Date Per Time 
+            // Generate a unique file name and save it.
+            var fileName = $"{Guid.NewGuid()}{extension}";
+            var filePath = Path.Combine(folderPath, fileName);
 
             using var fileStream = new FileStream(filePath, FileMode.Create);
-
-            //using var fileStream = File.Create(filePath);
-
             file.CopyTo(fileStream);
 
-            return fileName;
-
+            return fileName; // Return the file name for storage in the database.
         }
-
 
 
         public bool Delete(string filePath)

@@ -1,4 +1,5 @@
-﻿using Route.IKEA.BLL.Validations.Enums;
+﻿using Microsoft.AspNetCore.Http;
+using Route.IKEA.BLL.Validations.Enums;
 using Route.IKEA.DAL.Common.Enums;
 using System;
 using System.Collections.Generic;
@@ -37,5 +38,6 @@ namespace Route.IKEA.BLL.Models
         public DateTime CreationDate { get; set; }
         [Display(Name = "Department")]
         public int? DepartmentId { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

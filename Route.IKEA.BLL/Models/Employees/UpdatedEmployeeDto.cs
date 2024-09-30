@@ -1,4 +1,5 @@
-﻿using Route.IKEA.DAL.Common.Enums;
+﻿using Microsoft.AspNetCore.Http;
+using Route.IKEA.DAL.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,8 @@ namespace Route.IKEA.BLL.Models
 {
     public class UpdatedEmployeeDto
     {
+        public string? Image { get; set; }
+
         public int Id { get; set; }
         [MaxLength(50, ErrorMessage = "Max Length is 50 Chars")]
         [MinLength(5, ErrorMessage = "Min Length is 5 Chars")]

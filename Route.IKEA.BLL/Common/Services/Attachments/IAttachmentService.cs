@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.BLL.Common.Services.Attachments
 {
-    internal interface IAttachmentService
+    public interface IAttachmentService
     {
         string? Upload(IFormFile file, string folder);
         bool Delete(string filePath);

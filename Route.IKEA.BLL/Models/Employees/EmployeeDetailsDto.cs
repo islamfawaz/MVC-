@@ -1,4 +1,5 @@
-﻿using Route.IKEA.DAL.Common.Enums;
+﻿using Microsoft.AspNetCore.Http;
+using Route.IKEA.DAL.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -33,11 +34,14 @@ namespace Route.IKEA.BLL.Models
         public string? DepartmentName { get; set; }
 
 
+        public string? Image { get; set; }
 
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int LastModifiedBy { get; set; }
         public DateTime LastModifiedOn { get; set; }
+
+
 
 
     }

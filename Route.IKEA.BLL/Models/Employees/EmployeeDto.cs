@@ -1,4 +1,5 @@
-﻿using Route.IKEA.DAL.Common.Enums;
+﻿using Microsoft.AspNetCore.Http;
+using Route.IKEA.DAL.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,8 @@ namespace Route.IKEA.BLL.Models
 {
     public class EmployeeDto
     {
+        public string? Image { get; set; }
+
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public int? Age { get; set; }

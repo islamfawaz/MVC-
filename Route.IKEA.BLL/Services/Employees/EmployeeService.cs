@@ -1,4 +1,5 @@
-﻿using Route.IKEA.BLL.Models;
+﻿using LinkDev.IKEA.BLL.Common.Services.Attachments;
+using Route.IKEA.BLL.Models;
 using Route.IKEA.DAL.Entities.Employees;
 using Route.IKEA.DAL.Presistence.Repositories.Employees;
 using Route.IKEA.DAL.Presistence.UnitOfWork;
@@ -11,9 +12,12 @@ namespace Route.IKEA.BLL.Services.Employees
     public class EmployeeService : IEmployeeService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAttachmentService _attachmentService;
 
-        public EmployeeService(IUnitOfWork unitOfWork)
+        public EmployeeService(IUnitOfWork unitOfWork , IAttachmentService attachmentService)
         {
+            _attachmentService = attachmentService;
+
             _unitOfWork = unitOfWork;
         }
 
@@ -22,6 +26,7 @@ namespace Route.IKEA.BLL.Services.Employees
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
+          
             var employee = new Employee
             {
                 Name = entity.Name,
@@ -35,17 +40,18 @@ namespace Route.IKEA.BLL.Services.Employees
                 EmployeeType = entity.EmployeeType,
                 Salary = entity.Salary,
                 DepartmentId = entity.DepartmentId,
-
                 CreatedOn = DateTime.UtcNow,
-
                 CreatedBy = 1,
                 LastModifiedBy = 1,
                 LastModifiedOn = DateTime.UtcNow,
             };
+            if(entity.Image is not null)
+            _attachmentService.Upload(entity.Image, "images");
 
-             _unitOfWork.EmployeeRepository.Add(employee);
+            _unitOfWork.EmployeeRepository.Add(employee);
             return _unitOfWork.Complete();
         }
+
 
         public bool DeleteEmployee(int id)
         {
@@ -101,10 +107,11 @@ namespace Route.IKEA.BLL.Services.Employees
                 CreatedOn = employee.CreatedOn,
                 DepartmentId = employee.DepartmentId,
                 DepartmentName = employee.Department != null ? employee.Department.Name : "No Department Assigned",
-
                 CreatedBy = 1,
                 LastModifiedBy = 1,
                 LastModifiedOn = employee.LastModifiedOn,
+                Image = employee.Image,
+
             };
 
         }
@@ -116,7 +123,7 @@ namespace Route.IKEA.BLL.Services.Employees
 
             var employees = _unitOfWork.EmployeeRepository.SearchByName(name);
 
-            return employees.Select(e => new EmployeeDto
+            return employees.Where(e=>e.IsDeleted==false).Select(e => new EmployeeDto
             {
               
                  Name = e.Name,
