@@ -10,14 +10,14 @@ namespace Route.IKEA.BLL.Services.Employees
 {
     public interface IEmployeeService
     {
-        IEnumerable<EmployeeDto> GetAllEmployee();
+        IEnumerable<EmployeeDto> GetAllEmployeeAsync();
 
-        EmployeeDetailsDto? GetEmployeeById(int id);
-        int CreateEmployee(CreateEmployeeDto entity);
+        Task<EmployeeDetailsDto?> GetEmployeeByIdAsync(int id);
+        Task<int> CreateEmployeeAsync(CreateEmployeeDto entity);
 
-        int UpdateEmployee(UpdatedEmployeeDto entity);
+        Task<int> UpdateEmployeeAsync(UpdatedEmployeeDto entity);
 
-        bool DeleteEmployee(int entity);
+        Task<bool> DeleteEmployeeAsync(int entity);
 
         IEnumerable<EmployeeDto> SearchEmployeeByName(string name);
 

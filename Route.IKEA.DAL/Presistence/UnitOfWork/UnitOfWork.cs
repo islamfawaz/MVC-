@@ -32,12 +32,12 @@ namespace Route.IKEA.DAL.Presistence.UnitOfWork
             }
         }
 
-        public int Complete()
+        public  async Task<int> CompleteAsync()
         {
-            return _dbContext.SaveChanges();
+            return await _dbContext.SaveChangesAsync();
         }
-        public void Dispose() { 
-            _dbContext.Dispose();
+        public async ValueTask DisposeAsync() { 
+           await _dbContext.DisposeAsync();
         }
     }
 }

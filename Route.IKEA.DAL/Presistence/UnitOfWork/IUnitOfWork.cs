@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Route.IKEA.DAL.Presistence.UnitOfWork
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IAsyncDisposable
     {
         IDepartmentRepository DepartmentRepository { get;  }
         IEmployeeRepository EmployeeRepository { get; }
 
 
-        int Complete();
+        Task<int> CompleteAsync();
     }
 }

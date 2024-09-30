@@ -10,14 +10,14 @@ namespace Route.IKEA.BLL.Services.Departments
 {
     public interface IDepartmentService
     {
-        IEnumerable<DepartmentDto>GetAllDepartments();
+        Task<IEnumerable<DepartmentDto>> GetAllDepartmentsAsync();
 
-        DepartmentDetailsDto ? GetDepartmentById(int id); 
-        int CreateDepartment(CreateDepartmentDto entity);
+        Task<DepartmentDetailsDto?>  GetDepartmentByIdAsync(int id); 
+        Task<int> CreateDepartmentAsync(CreateDepartmentDto entity);
 
-        int UpdateDepartment(UpdatedDepartmentDto entity);
+        Task<int> UpdateDepartmentAsync(UpdatedDepartmentDto entity);
 
-        bool DeleteDepartment(int entity);
+        Task<bool> DeleteDepartmentAsync(int entity);
 
         IEnumerable<DepartmentDto> SearchDepartments(string name);
 
