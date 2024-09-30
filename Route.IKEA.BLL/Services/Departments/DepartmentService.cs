@@ -2,6 +2,7 @@
 using Route.IKEA.BLL.Models.Departments;
 using Route.IKEA.DAL.Entities.Department;
 using Route.IKEA.DAL.Presistence.Repositories.Departments;
+using Route.IKEA.DAL.Presistence.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,15 @@ namespace Route.IKEA.BLL.Services.Departments
 {
     public class DepartmentService : IDepartmentService
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DepartmentService(IDepartmentRepository departmentRepository)
+        public DepartmentService(IUnitOfWork unitOfWork)
         {
-            _departmentRepository = departmentRepository;
+            _unitOfWork = unitOfWork;
         }
-        public int CreateDepartment(CreateDepartmentDto departmentDto)
+
+       
+        public async Task<int> CreateDepartmentAsync(CreateDepartmentDto departmentDto)
         {
             var department = new Department()
             {
@@ -32,22 +35,24 @@ namespace Route.IKEA.BLL.Services.Departments
 
             };
 
-            return _departmentRepository.Add(department);
+             _unitOfWork.DepartmentRepository.Add(department);
+            return await  _unitOfWork.CompleteAsync();
         }
 
-        public bool DeleteDepartment(int id)
+        public async Task<bool> DeleteDepartmentAsync(int id)
         {
-            var department = _departmentRepository.GetById(id);
+            var DepartmentRepo = _unitOfWork.DepartmentRepository;
+            var department =await DepartmentRepo.GetByIdAsync(id);
             if (department is { })
-                return _departmentRepository.Delete(department) > 0;
+                 DepartmentRepo.Delete(department);
 
-            return false;
+            return await _unitOfWork.CompleteAsync()>0;
 
         }
 
-        public IEnumerable<DepartmentDto> GetAllDepartments()
+        public async Task<IEnumerable<DepartmentDto>> GetAllDepartmentsAsync()
         {
-            var department = _departmentRepository.GetAllAsIQueryable()
+            var department = await _unitOfWork.DepartmentRepository.GetAllAsIQueryable()
                 .Where(d => d.IsDeleted != true)
                 .Select(department => new DepartmentDto
             {
@@ -55,13 +60,13 @@ namespace Route.IKEA.BLL.Services.Departments
                 Code = department.Code,
                 Name = department.Name,
                 CreationDate = department.CreationDate,
-            }).AsNoTracking().ToList();
-            return department;
+            }).AsNoTracking().ToListAsync();
+            return  department;
         }
 
-        public DepartmentDetailsDto? GetDepartmentById(int id)
+        public async Task<DepartmentDetailsDto?> GetDepartmentByIdAsync(int id)
         {
-            var department = _departmentRepository.GetById(id);
+            var department =await _unitOfWork.DepartmentRepository.GetByIdAsync(id);
             if (department is not null)
                 return new DepartmentDetailsDto()
                 {
@@ -80,7 +85,7 @@ namespace Route.IKEA.BLL.Services.Departments
             return null;
         }
 
-        public int UpdateDepartment(UpdatedDepartmentDto departmentDto)
+        public async Task<int> UpdateDepartmentAsync(UpdatedDepartmentDto departmentDto)
         {
             var department = new Department()
             {
@@ -94,7 +99,8 @@ namespace Route.IKEA.BLL.Services.Departments
 
             };
 
-            return _departmentRepository.Update(department);
+            _unitOfWork.DepartmentRepository.Update(department);
+            return await _unitOfWork.CompleteAsync();
         }
 
         public IEnumerable<DepartmentDto> SearchDepartments(string name)
@@ -104,9 +110,9 @@ namespace Route.IKEA.BLL.Services.Departments
                 throw new ArgumentException("Search term cannot be empty or null.", nameof(name));
             }
 
-            var departments = _departmentRepository.SearchByName(name);
+            var departments = _unitOfWork.DepartmentRepository.SearchByName(name);
 
-            var Searched = departments.Select(d => new DepartmentDto
+            var Searched = departments.Where(d=>d.IsDeleted==false).Select(d => new DepartmentDto
             {
                 Id = d.Id,
                 Name = d.Name

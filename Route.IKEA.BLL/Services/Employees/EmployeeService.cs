@@ -1,6 +1,8 @@
-﻿using Route.IKEA.BLL.Models;
+﻿using LinkDev.IKEA.BLL.Common.Services.Attachments;
+using Route.IKEA.BLL.Models;
 using Route.IKEA.DAL.Entities.Employees;
 using Route.IKEA.DAL.Presistence.Repositories.Employees;
+using Route.IKEA.DAL.Presistence.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +11,22 @@ namespace Route.IKEA.BLL.Services.Employees
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAttachmentService _attachmentService;
 
-        public EmployeeService(IEmployeeRepository employeeRepository)
+        public EmployeeService(IUnitOfWork unitOfWork , IAttachmentService attachmentService)
         {
-            _employeeRepository = employeeRepository;
+            _attachmentService = attachmentService;
+
+            _unitOfWork = unitOfWork;
         }
 
-        public int CreateEmployee(CreateEmployeeDto entity)
+        public async Task<int> CreateEmployeeAsync(CreateEmployeeDto entity)
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
+          
             var employee = new Employee
             {
                 Name = entity.Name,
@@ -34,30 +40,32 @@ namespace Route.IKEA.BLL.Services.Employees
                 EmployeeType = entity.EmployeeType,
                 Salary = entity.Salary,
                 DepartmentId = entity.DepartmentId,
-
                 CreatedOn = DateTime.UtcNow,
-
                 CreatedBy = 1,
                 LastModifiedBy = 1,
                 LastModifiedOn = DateTime.UtcNow,
             };
+            if(entity.Image is not null)
+            _attachmentService.Upload(entity.Image, "images");
 
-            return _employeeRepository.Add(employee);
+            _unitOfWork.EmployeeRepository.Add(employee);
+            return await _unitOfWork.CompleteAsync();
         }
 
-        public bool DeleteEmployee(int id)
-        {
-            var employee = _employeeRepository.GetById(id);
-            if (employee == null)
-                return false;
 
-            _employeeRepository.Delete(employee);
-            return true;
+        public async Task<bool> DeleteEmployeeAsync(int id)
+        {
+            var employeeRepo=  _unitOfWork.EmployeeRepository;
+            var employee = await employeeRepo.GetByIdAsync(id);
+            if (employee is { })
+                employeeRepo.Delete(employee);
+
+            return await _unitOfWork.CompleteAsync()>0;
         }
 
-        public IEnumerable<EmployeeDto> GetAllEmployee()
+        public IEnumerable<EmployeeDto> GetAllEmployeeAsync()
         {
-            var employees = _employeeRepository.GetAllAsIQueryable()
+            var employees = _unitOfWork.EmployeeRepository.GetAllAsIQueryable()
                 .Where(E=>E.IsDeleted != true)
                 .Select(employee => new EmployeeDto
                 {
@@ -77,9 +85,9 @@ namespace Route.IKEA.BLL.Services.Employees
             return employees;
         }
 
-        public EmployeeDetailsDto? GetEmployeeById(int id)
+        public async Task <EmployeeDetailsDto?> GetEmployeeByIdAsync(int id)
         {
-            var employee = _employeeRepository.GetById(id);
+            var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(id);
             if (employee == null)
                 return null;
 
@@ -98,12 +106,13 @@ namespace Route.IKEA.BLL.Services.Employees
                 Salary = employee.Salary,
                 CreatedOn = employee.CreatedOn,
                 DepartmentId = employee.DepartmentId,
-                DepartmentName = employee.Department!.Name,
-
+                DepartmentName = employee.Department != null ? employee.Department.Name : "No Department Assigned",
+                Image =employee.Image,
                 CreatedBy = 1,
                 LastModifiedBy = 1,
                 LastModifiedOn = employee.LastModifiedOn,
             };
+
         }
 
         public IEnumerable<EmployeeDto> SearchEmployeeByName(string name)
@@ -111,10 +120,12 @@ namespace Route.IKEA.BLL.Services.Employees
             if (string.IsNullOrWhiteSpace(name))
                 return Enumerable.Empty<EmployeeDto>();
 
-            var employees = _employeeRepository.SearchByName(name);
+            var employees = _unitOfWork.EmployeeRepository.SearchByName(name);
 
-            return employees.Select(e => new EmployeeDto
+            return employees.Where(e=>e.IsDeleted==false).Select(e => new EmployeeDto
             {
+              
+                 Name = e.Name,
                 Id = e.Id,
                 Age = e.Age,
                 Salary = e.Salary,
@@ -122,15 +133,16 @@ namespace Route.IKEA.BLL.Services.Employees
                 Email = e.Email,
                 Gender = e.Gender.ToString(),
                 EmployeeType = e.EmployeeType.ToString()
+                
             });
         }
 
-        public int UpdateEmployee(UpdatedEmployeeDto entity)
+        public async Task<int> UpdateEmployeeAsync(UpdatedEmployeeDto entity)
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
-            var employee = _employeeRepository.GetById(entity.Id);
+            var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(entity.Id);
             if (employee == null)
                 throw new ArgumentException("Employee not found");
 
@@ -146,7 +158,8 @@ namespace Route.IKEA.BLL.Services.Employees
             employee.EmployeeType = entity.EmployeeType;
             employee.DepartmentId = entity.DepartmentId;
 
-            return _employeeRepository.Update(employee);
+             _unitOfWork.EmployeeRepository.Update(employee);
+            return await _unitOfWork.CompleteAsync();
         }
     }
 }

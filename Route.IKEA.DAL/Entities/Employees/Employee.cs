@@ -41,6 +41,7 @@ namespace Route.IKEA.DAL.Entities.Employees
 
         public EmployeeType EmployeeType { get; set; }
 
+        public string ? Image { get; set; }
         public int? DepartmentId { get; set; }
 
         // Navigation Property

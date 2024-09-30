@@ -19,6 +19,20 @@
     <div class="tab-pane fade show active p-4 border" id="general" role="tabpanel" aria-labelledby="general-tab">
         <div class="row">
 
+            <div class="d-flex justify-content-center">
+                <div class="form-group ">
+                    @if (Model.Image != null)
+                    {
+                        <img src="~/Files/images/@Model.Image" alt="Uploaded Image" class="photo" />
+                    }
+                    else
+                    {
+                        <img src="~/Files/images/WhatsApp Image 2024-09-30 at 10.30.41 AM.jpeg" alt="Uploaded Image" class="photo" />
+                    }
+                </div>
+
+            </div>
+
             <div class="form-group ">
                 <label class="col-form-label" asp-for="Name"></label>
                 <input asp-for="Name" class="form-control" readonly />
@@ -58,18 +72,18 @@
 
             <div class="form-group ">
                 <label class="col-form-label" asp-for="DepartmentName"></label>
-                @if(Model.DepartmentId == null)
+                @if (Model.DepartmentId == null)
                 {
-                <input value="Null" class="form-control" readonly />
+                    <input value="Null" class="form-control" readonly />
                 }
-                else 
+                else
                 {
-                <input asp-for="DepartmentName" class="form-control" readonly />
+                    <input asp-for="DepartmentName" class="form-control" readonly />
                 }
             </div>
 
 
-            
+
 
             <div class="d-flex justify-content-between p-4">
 

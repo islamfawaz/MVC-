@@ -26,68 +26,59 @@
 
 <h1>Departments</h1>
 
-<form method="get" asp-controller="Department" asp-action="Index">
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by department name..." name="searchTerm" value="@searchTerm" />
-        <button class="btn btn-primary" type="submit">Search</button>
+<form method="get" asp-action="Index">
+    <div class="form-group">
+        <input type="text" id="SearchInput" name="searchTerm" value="@ViewData["SearchTerm"]" class="form-control my-2" placeholder="Search by Name" />
     </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a asp-action="Index" class="btn btn-secondary">Clear</a>
 </form>
 
-<a asp-controller="Department" asp-action="Create" class="btn btn-primary mb-3">Create New Department</a>
+
+
+
+
 
 @if (Model.Count() > 0)
 {
-    <table class="table table-striped table-hover mt-4">
-        <thead>
-            <tr>
-                <th>@Html.DisplayNameFor(d => d.Code)</th>
-                <th>@Html.DisplayNameFor(d => d.Name)</th>
-                <th>@Html.DisplayNameFor(d => d.CreationDate)</th>
-                <th>Details</th>
-                <th>Update</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var department in Model)
-            {
-                <tr>
-                    <td>@Html.DisplayFor(d => department.Code)</td>
-                    <td>@Html.DisplayFor(d => department.Name)</td>
-                    <td>@department.CreationDate.ToString("yyyy-MM-dd")</td>
 
-                    <partial name="_ButtonPartial" model="department.Id" />
-                </tr>
 
-                <!-- Modal -->
-                <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Employee</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Are You sure to delete this Department ?
-                            </div>
-                            <div class="modal-footer">
-                                <form asp-action="Delete" asp-route-id="@department.Id">
 
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-danger">Delete</button>
+    <div id="departmentTableContainer">
+        <partial name="Partials/DepartmentTablePartialView" model="Model" />
+    </div>
 
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </tbody>
-    </table>
+
 }
 else
 {
     <div class="alert alert-info mt-3">
         <h4>No departments available</h4>
     </div>
+}
+
+<a asp-controller="Department" asp-action="Create" class="btn btn-primary mb-3">Create New Department</a>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            const searchBar = $("#SearchInput");
+            const tableContainer = $('#departmentTableContainer');
+
+            searchBar.on('keyup', function (event) {
+                var searchValue = searchBar.val();
+                $.ajax({
+                    url: '@Url.Action("Index", "Department")',
+                    type: 'GET',
+                    data: { searchTerm: searchValue },
+                    success: function (result) {
+                        tableContainer.html(result); 
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
 }

@@ -18,37 +18,25 @@ namespace Route.IKEA.DAL.Presistence.Repositories._Generic
             _dbContext = dbContext;
         }
 
-        public IEnumerable<T> GetAll(bool withAsNoTracking = true)
+        public async  Task<IEnumerable<T>> GetAllAsync(bool withAsNoTracking = true)
         {
             return withAsNoTracking
-                ? _dbContext.Set<T>().Where(X => X.IsDeleted != true).AsNoTracking().ToList()
-                : _dbContext.Set<T>().ToList();
+                  ? await _dbContext.Set<T>().Where(x => x.IsDeleted != true).AsNoTracking().ToListAsync()
+                : await _dbContext.Set<T>().ToListAsync();
         }
-
-        public T? GetById(int id)
+        public async Task<T?> GetByIdAsync(int id)
         {
-            return _dbContext.Set<T>().Find(id);
+            return await _dbContext.Set<T>().FindAsync(id);
         }
-
-        public int Add(T entity)
-        {
-            _dbContext.Set<T>().Add(entity);
-            return _dbContext.SaveChanges();
-        }
-
-        public int Delete(T entity)
+        public void Add(T entity)
+        =>  _dbContext.Set<T>().Add(entity);
+        public void Delete(T entity)
         {
             entity.IsDeleted = true;
             _dbContext.Update(entity);
-            return _dbContext.SaveChanges();
         }
-
-        public int Update(T entity)
-        {
-            _dbContext.Set<T>().Update(entity);
-            return _dbContext.SaveChanges();
-        }
-
+        public void Update(T entity)
+        => _dbContext.Set<T>().Update(entity);
         public IQueryable<T> GetAllAsIQueryable()
         {
             return _dbContext.Set<T>();

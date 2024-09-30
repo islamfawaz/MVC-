@@ -9,17 +9,17 @@ namespace Route.IKEA.DAL.Presistence.Repositories._Generic
 {
     public interface IGenericRepository<T> where T : ModelBase
     {
-        IEnumerable<T> GetAll(bool withAsNoTracking = true);
+        Task<IEnumerable<T>> GetAllAsync(bool withAsNoTracking = true);
         IQueryable<T> GetAllAsIQueryable();
         IEnumerable<T> GetAllAsIEnumerable();
 
-        T? GetById(int id);
+        Task<T?> GetByIdAsync(int id);
 
-        int Add(T entity);
+        void Add(T entity);
 
-        int Update(T entity);
+        void Update(T entity);
 
-        int Delete(T entity);
+        void Delete(T entity);
 
         IEnumerable<T> SearchByName(string name);
 
