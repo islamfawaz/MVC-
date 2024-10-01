@@ -1,8 +1,10 @@
 using LinkDev.IKEA.BLL.Common.Services.Attachments;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Route.IKEA.BLL.Services.Departments;
 using Route.IKEA.BLL.Services.Employees;
+using Route.IKEA.DAL.Entities.Identity;
 using Route.IKEA.DAL.Presistence.Data;
 using Route.IKEA.DAL.Presistence.Repositories.Departments;
 using Route.IKEA.DAL.Presistence.Repositories.Employees;
@@ -40,9 +42,35 @@ namespace Route.IKEA.PL
 
             builder.Services.AddScoped<IUnitOfWork , UnitOfWork>();
             builder.Services.AddTransient<IAttachmentService, AttachmentService>();
-            #endregion
 
-            var app = builder.Build();
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>((option) =>
+            {
+                option.Password.RequiredLength = 5;
+                option.Password.RequireDigit = true;
+                option.Password.RequireUppercase = true;
+                option.Password.RequireLowercase = true;
+                option.Password.RequiredUniqueChars = 1;
+
+                option.User.RequireUniqueEmail = true;
+
+                option.Lockout.AllowedForNewUsers = true;
+                option.Lockout.MaxFailedAccessAttempts = 5;
+                option.Lockout.DefaultLockoutTimeSpan= TimeSpan.FromDays(5);
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+             ///         builder.Services.AddScoped<UserManager<ApplicationUser>>();
+			///builder.Services.AddScoped<SignInManager<ApplicationUser>>();
+   /// builder.Services.AddScoped<RoleManager<IdentityRole>>();
+
+
+
+
+
+
+			#endregion
+
+			var app = builder.Build();
 
             #region Configure Kestrel Middlewares
             // Configure the HTTP request pipeline.
