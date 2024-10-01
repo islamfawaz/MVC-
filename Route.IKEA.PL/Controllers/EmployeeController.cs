@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using Route.IKEA.BLL.Services.Departments;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Route.IKEA.PL.Controllers
 {
-    public class EmployeeController : Controller
+	[Authorize]
+
+	public class EmployeeController : Controller
     {
         #region Services
         private readonly IEmployeeService _employeeService;

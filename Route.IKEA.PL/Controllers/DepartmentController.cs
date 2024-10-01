@@ -5,10 +5,13 @@ using Route.IKEA.BLL.Models.Departments;
 using Route.IKEA.BLL.Services.Departments;
 using Route.IKEA.PL.ViewModels.Departments;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Route.IKEA.PL.Controllers
 {
-    public class DepartmentController : Controller
+	[Authorize]
+
+	public class DepartmentController : Controller
     {
         #region Services
         private readonly IDepartmentService _departmentService;
