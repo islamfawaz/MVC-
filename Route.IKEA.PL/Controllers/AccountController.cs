@@ -7,6 +7,7 @@ namespace Route.IKEA.PL.Controllers
 {
 	public class AccountController : Controller
 	{
+		#region Services
 		private readonly SignInManager<ApplicationUser> _signInManager;
 		private readonly UserManager<ApplicationUser> _userManager;
 
@@ -14,7 +15,8 @@ namespace Route.IKEA.PL.Controllers
 		{
 			_signInManager = signInManager;
 			_userManager = userManager;
-		}
+		} 
+		#endregion
 
 		#region Sign Up
 		[HttpGet]
@@ -99,6 +101,14 @@ namespace Route.IKEA.PL.Controllers
 			ModelState.AddModelError(string.Empty, "Invalid login attempt.");
 			return View(model);
 		}
-		#endregion
-	}
+        #endregion
+
+        #region Sign Out
+        public async Task<IActionResult> SignOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(SignIn), "Account"); 
+        }
+        #endregion
+    }
 }
