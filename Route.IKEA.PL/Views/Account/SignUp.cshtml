@@ -8,6 +8,8 @@
 <div class="main-agileinfo">
 	<div class="agileits-top">
 		<form asp-action="SignUp" >
+			<div asp-validation-summary="ModelOnly"></div>
+
 			<input class="text my-2" asp-for="FName" placeholder="First Name" required="">
 			<input class="text my-2" asp-for="LName" placeholder="Last Name" required="">
 
@@ -29,3 +31,6 @@
 	</div>
 </div>
 
+@section ValidationScripts {
+	<partial name="_ValidationScriptsPartial" />
+}
