@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using Route.IKEA.BLL.Services.Departments;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Route.IKEA.PL.Controllers
 {
+    [Authorize]
+
     public class EmployeeController : Controller
     {
         #region Services
