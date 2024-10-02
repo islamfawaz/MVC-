@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Route.IKEA.PL.Controllers
 {
-	[Authorize]
+    [Authorize]
 
-	public class EmployeeController : Controller
+    public class EmployeeController : Controller
     {
         #region Services
         private readonly IEmployeeService _employeeService;

@@ -1,4 +1,4 @@
-using LinkDev.IKEA.BLL.Common.Services.Attachments;
+﻿using LinkDev.IKEA.BLL.Common.Services.Attachments;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Route.IKEA.BLL.Services.Departments;
@@ -44,7 +44,9 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(5);
 })
+
 .AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders()
 .AddDefaultTokenProviders();
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -67,11 +69,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication(); 
-app.UseAuthorization();
+app.UseAuthentication(); //انت مين ؟
+app.UseAuthorization();// صلاحياتك ايه ؟
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=SignIn}/{id?}");
-
+	pattern: "{controller=Home}/{action=Index}/{id?}");
 app.Run();
