@@ -13,12 +13,14 @@ namespace Route.IKEA.PL.Controllers
 	{
 		#region Services
 		private readonly SignInManager<ApplicationUser> _signInManager;
-		private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMailSettings _mailSettings;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,IMailSettings mailSettings)
 		{
 			_signInManager = signInManager;
-			_userManager = userManager;
+            _mailSettings = mailSettings;
+            _userManager = userManager;
 		} 
 		#endregion
 
@@ -152,16 +154,23 @@ namespace Route.IKEA.PL.Controllers
 					//Create Reset Password URl
 					var url= Url.Action(action: "ResetPassword", controller: "Account", new {email=model.Email ,token=token},Request.Scheme);
 
-					//Create Email
-					var email = new Email()	
+					////Create Email
+					//var email = new Email()	
+					//{
+					//	To = model.Email,
+					//	Subject = "Reset Subject",
+					//	Body=url,
+
+					//};
+					//send email
+					//EmailSettings.SendEmail(email);
+					var email = new Email()
 					{
 						To = model.Email,
 						Subject = "Reset Subject",
-						Body=url,
-
+						Body = url
 					};
-                    //send email
-					EmailSettings.SendEmail(email);
+					_mailSettings.SendEmail(email);
 					return RedirectToAction(nameof(CheckYourInbox));
                 }
 				ModelState.AddModelError(string.Empty, errorMessage: "Invalid Operation, Please Try Again !");

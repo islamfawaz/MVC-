@@ -6,6 +6,7 @@ using Route.IKEA.BLL.Services.Employees;
 using Route.IKEA.DAL.Entities.Identity;
 using Route.IKEA.DAL.Presistence.Data;
 using Route.IKEA.DAL.Presistence.UnitOfWork;
+using Route.IKEA.PL.Helper;
 using Route.IKEA.PL.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -56,6 +57,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromDays(1);
     options.LogoutPath = "/Account/SignIn";
 });
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddTransient<IMailSettings, EmailSettings>();
+
 
 var app = builder.Build();
 
